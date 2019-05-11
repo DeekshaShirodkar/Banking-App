@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Create Account</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" type="text/css" href="/cssFiles/style.css">
+        <link rel="stylesheet" type="text/css" href="/cssFiles/bootstrap.min.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    </head>
+
+    <body>
+        <div class="container-fluid">
+            <div class="row">
+                <nav class="navbar fixed-top navbar-light bg-light savings-header-bg">
+                    <div class="col-1">
+                        <i class="fas fa-angle-left savings-icon-color" style="font-size:24px; color:white" onclick="navigateBack()"></i>
+                    </div>
+                    <div class ="col-9">
+                        <div class="navbar-brand savings-header-text ">Create Account</div>
+                    </div>
+                </nav>
+            </div>
+            <div class="row" style="margin-top: 5px">
+                <form class=" w-100" style="margin:12px">
+                    <div class="form-group">
+                        <label class="savings-label-text">Account name</label>
+                        <input type="text" class="form-control" id="accountName" >
+                        <label class="savings-label-text">Account type</label>
+                        <div >
+                            <div>
+                                <input  type="radio" name="accountType"  value="Flexible savings" checked >
+                                <label>Flexible savings</label>
+                            </div>
+                            <div>
+                                <input  type="radio" name="accountType" value="Fixed term savings">
+                                <label>Fixed term savings</label>
+                            </div>  
+                        </div>
+                    </div>
+                </form>
+                <button type="button" class="btn savings-btn btn-lg btn-block" onclick="createSavingsPlan()">Create</button>
+                <div class="alert alert-success savings-alert" id="success-alert">
+                        <strong>Success! </strong>Savings account created
+                </div>
+            </div>
+        </div>
+        <script src="/scripts/jquery-3.3.1.js" crossorigin="anonymous"></script>
+       
+        <script>
+            function navigateBack() {
+                window.history.back()
+            };
+
+            function createSavingsPlan() {
+                var accountName = $("#accountName").val();
+                var accountType = $("input[name='accountType']:checked").val();
+                $("#success-alert").fadeIn(4000).fadeOut(4000) ;
+            }
+        </script>
+    </body>
+</html>

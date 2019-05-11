@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        Savings Dashboard
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" href="/cssFiles/style.css">
+    <link rel="stylesheet" type="text/css" href="/cssFiles/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+    <link rel="stylesheet" type="text/css" href="/cssFiles/kendo.mobile.all.min.css">
+    <link rel="stylesheet" type="text/css" href="/cssFiles/kendo.common.min.css">
+
+</head>
+
+<body>
+    <div class="container-fluid" data-role="view" >
+        <div class="row ">
+            <nav class="navbar fixed-top navbar-light bg-light savings-header-bg" id="header">
+                    <i class="fas fa-angle-left savings-icon-color" style="font-size:24px; color:white"
+                        onclick="goBack()"></i>
+                    <div class="navbar-brand savings-header-text ">Savings Dashboard</div>
+                    <i class="fas fa-plus savings-icon-color" style="font-size:20px; color:white;" onclick="navigateToAccountCreation()"></i>
+                    <i class="fas fa-search savings-icon-color" style="font-size:20px; color:white;" onclick="showSearchBar()"></i>
+              </nav>  
+              <nav class="navbar fixed-top navbar-light bg-light savings-header-bg" style="display:none ;height: 56px;" id="searchBar">
+                    <form class="km-filter-form w-100" >
+                        <div class="km-filter-wrap">
+                            <input type="search" oninput="filterData()" placeholder="Search" id="searchBox" class="savings-search-view">
+                            <i class="far fa-times-circle savings-icon-color" style="font-size:20px; color:white" onclick="showHeader()"></i>
+                        </div>
+                    </form>
+            </nav>
+        </div>
+        <div class="row">
+            <div class="list-group w-100" id="accountList">
+                <div data-role="listview" data-template="accountListTemplate" id="listView"></div>
+            </div>
+        </div>
+       
+    </div>
+
+    <script src="/scripts/jquery-3.3.1.js" ></script>
+    <script src="/scripts/handlebar.min.js"></script>
+    <script src="/scripts/kendo.all.min.js" ></script>
+    
+    <script id="accountListTemplate" type="text/x-kendo-template">
+        <div  class="list-group-item list-group-item-action savings-list" onclick="navigateToDetails('#: accountId #')">
+            <div class="row align-items-center">
+                <div class="col-2">
+                    <i class="fas fa-coins savings-icon-color" style="font-size:28px;"></i>
+                </div>
+                <div class="col-10">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1" >#: accountName #</h5>
+                        <small class="text-muted"><i class="fas fa-angle-right savings-icon-color" style="font-size:24px;"></i></small>
+                    </div>
+                    <p class="mb-1">Available balance : <span>₹ #:accountBalance#</span></p>
+                    <small class="text-muted">#: accountType #</small>
+                </div>
+            </div>
+        </div>  
+   </script>
+    <script>
+        var savingsDashboardController = {}
+        
+        $(document).ready(function () { 
+           $.ajax({
+                url: "http://localhost:3000/accounts",
+                type: "GET",
+                success: function (data) {
+                    savingsDashboardController.accountList = data;
+                    $("#listView").kendoMobileListView({
+                        template: kendo.template($("#accountListTemplate").html()),
+                        filterable: {
+                            placeholder: "Type to search...",
+                            field: "accountName",
+                            ignoreCase:true
+                        }
+                    });  
+                    $("#listView").data("kendoMobileListView").setDataSource(new kendo.data.DataSource({
+                            data:buildData(savingsDashboardController.accountList),
+                            sort: { field: "accountName", dir: "asc" }
+                        })
+                    )
+                }
+            });
+            
+        });
+
+        function filterData () {
+            var search = $.trim($("#searchBox").val());
+            if (search != "") {
+                $("#listView").data("kendoMobileListView").setDataSource(new kendo.data.DataSource({
+                    data:buildData(savingsDashboardController.accountList),
+                    sort: { field: "accountName", dir: "asc" },
+                    filter: { field: "accountName", operator: "contains",ignoreCase:true, value: search }
+                }))
+            }  else {
+                $("#listView").data("kendoMobileListView").setDataSource(new kendo.data.DataSource({
+                    data:buildData(savingsDashboardController.accountList),
+                    sort: { field: "accountName", dir: "asc" }
+                }))
+            }                                          
+        }
+
+        function buildData(data) {
+            return data.accountList.map(function (item) {
+               return {
+                   ... item,
+                   accountType: item.accountType === "FIXED" ? "Fixed term savings" : "Flexible savings",
+                   accountBalance : (item.accountBalance/100).toFixed(2).replace(/(\d)(?=(\d{2})+\d\.)/g, '$1,')
+               }
+               
+            })
+        };
+
+        function goBack() {
+            window.history.back();
+        };
+        function navigateToDetails(accountId) {
+            sessionStorage.setItem("accountId", accountId);
+            window.location.href = "/accountDetails"
+        };
+
+        function navigateToAccountCreation () {
+            window.location.href = "/accountCreation"
+        }
+        function showSearchBar () {
+            $("#header").hide();
+            $("#searchBar").show()
+        }
+
+        function showHeader() {
+            $("#searchBox").val("");
+            $("#header").show();
+            $("#searchBar").hide();
+            filterData();
+           
+        }
+    </script>
+</body>
+
+</html>

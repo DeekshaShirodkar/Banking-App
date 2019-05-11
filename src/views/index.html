@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+			<title>
+					Sign In
+			</title>
+			<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+			<link rel="stylesheet" type="text/css" href="/cssFiles/style.css">
+			<link rel="stylesheet" type="text/css" href="/cssFiles/bootstrap.min.css">
+	</head>
+	<body>
+			<div class="container-fluid">
+					<div class="row ">
+							<nav class="navbar fixed-top navbar-light bg-light savings-header-bg">
+									<div class="navbar-brand savings-header-text " style="text-align: center; width:100%">
+											<img src="/images/veriskLogo1.png" style="width: 10%;	max-width: 30px;" >
+											<span>Verisk Financial</span>
+									</div>
+							</nav>
+					</div>
+					<div class="row">
+						<form class=" w-100" style="margin:12px" id="inputs">
+								<div class="form-group">
+									<label class="savings-label-text"></label>
+									<input type="text" class="form-control"  placeholder= "Username" id="userName" >
+									<label class="savings-label-text"></label>
+									<input type="text" class="form-control"  placeholder= "Password" id="password" >
+								</div>
+								<div class="custom-control custom-checkbox" style="margin-bottom: 5px">
+										<input type="checkbox" class="custom-control-input" id="customCheck1">
+										<label class="custom-control-label" for="customCheck1">Remember Me</label>
+								</div>
+						</form>
+						<button type="button" id="signin" class="btn savings-btn btn-lg btn-block" onclick="navigateToSavingsDashboard()">Sign In</button>
+					</div>
+			</div>
+			<script src="/scripts/jquery-3.3.1.js" ></script>
+			<script>
+			function navigateToSavingsDashboard() {
+				window.location.href = '/accountList';
+			}
+			</script>
+	</body>
+</html>

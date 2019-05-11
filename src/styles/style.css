@@ -1,0 +1,119 @@
+html, body {
+ width: 100%;
+height: 100%;
+
+padding-top: 28px;
+}
+.button {
+  background-color: #04adef; /* Green */
+  border: none;
+  color: white;
+  padding: 10px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+input[type=text] {
+    border:2px solid #ccc; 
+    border-radius: 5px;
+}
+
+.savings-header-bg  {
+  background-image: linear-gradient(to bottom right,#43C6AC,#191654);
+  box-shadow: 0 8px 6px -6px #999
+}
+
+.savings-header-text {
+  font-weight: bold;
+  font-style: italic;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  color: white !important;
+  margin-right: inherit !important
+}
+
+
+.savings-icon-color {
+  color:lightseagreen;
+}
+
+
+.savings-list {
+  box-shadow: 0 8px 6px -6px #999;
+  border-radius: 10px !important;
+  margin-top:5px;
+}
+
+.savings-title-text {
+  margin-left: 10px;
+  margin-bottom: auto;
+  font-family: inherit;
+}
+
+.savings-value-text {
+    margin-left: 10px;
+    font-family: inherit;
+    font-weight: lighter;
+}
+.savings-label-text {
+    font-weight: 500;
+    margin-top: 10px;
+}
+
+.savings-input-box {
+    border: 2px solid #ccc !important;
+    border-radius: 5px !important;
+}
+
+.savings-btn {
+  background-color: lightseagreen !important;
+  margin: 10px;
+  color: white !important;
+  font-weight: 500 !important;
+}
+
+.savings-alert {
+  display: none;
+  bottom:0;
+  position:fixed !important;
+  width:100%;
+  text-align: center;
+}
+#listView> li {
+  list-style-type:none
+}
+
+.km-listview-wrapper>form>div>input{
+  display: none;
+}
+
+.savings-search-view {
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid white;
+    width: 90%;
+    color: white;
+    outline: none;
+}
+::placeholder {
+  color: white;
+  opacity: 1; 
+}
+
+input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  
+}
+
+.savings-dropdown {
+  bottom: 0px;
+  padding-bottom: 0px;
+  position: fixed;
+  height: 160px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+} 

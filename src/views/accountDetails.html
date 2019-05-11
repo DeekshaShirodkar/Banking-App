@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Account Details</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" type="text/css" href="/cssFiles/style.css">
+        <link rel="stylesheet" type="text/css" href="/cssFiles/bootstrap.min.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" crossorigin="anonymous">
+    </head>
+
+    <body>
+        <div class="container-fluid" id="main-div">
+            <div class="row">
+                <nav class="navbar fixed-top navbar-light bg-light savings-header-bg">
+                    <i class="fas fa-angle-left savings-icon-color" style="font-size:24px; color:white" data-bind="click:functions.navigateBack"></i>
+                    <div class="navbar-brand savings-header-text ">Account Details</div>
+                    <i class="fas fa-ellipsis-v savings-icon-color" onclick="togglePopup()" id="dropdownOptions" style="font-size:20px; color:white"></i>
+                </nav>
+            </div>
+            <div class="row" style="margin-top: 5px">
+                <div class="list-group w-100" id="accountList">
+                    <h5 class="savings-title-text" >Account name:</h5>
+                    <p class="savings-value-text"  data-bind="text:accountName"></p>
+                    <h5 class="savings-title-text">Account Number:</h5>
+                    <p class="savings-value-text" data-bind="text:accountNumber"></p>
+                    <h5 class="savings-title-text">Account type:</h5>
+                    <p class="savings-value-text" data-bind="text:accountType"></p>
+                    <h5 class="savings-title-text">Account balance:</h5>
+                    <p class="savings-value-text" data-bind="text:accountbalance"></p>
+                    <h5 class="savings-title-text">Date created:</h5>
+                    <p class="savings-value-text" data-bind="text:dateCreated"></p>
+                    <h5 class="savings-title-text">Last transaction date:</h5>
+                    <p class="savings-value-text" data-bind="text:lastTransactionDate"></p>
+                </div>
+            </div>   
+            <div class=" savings-dropdown" style="display:none" id="optionsDropdown" >
+                    <div class="row">
+                        <div class="savings-header-bg w-100">
+                            <div class="savings-header-text" style="margin: 13px">
+                                <p class="col-10" style="margin: 10px; display:inline">Account options</p>
+                                <p class="col-2" style="display:inline; float:right;" onclick="togglePopup()">&times</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="border-bottom: 1px solid black;height: 53px">
+                        <p style ="margin: 25px;">Rename</p>
+                    </div>
+                    <div class="row" style="height: 53px">
+                        <p style ="margin: 25px;">Delete</p>
+                    </div>
+            </div>
+        </div>
+       
+        <script src="/scripts/jquery-3.3.1.js" crossorigin="anonymous"></script>
+        <script src="/scripts/kendo.all.min.js" crossorigin="anonymous"></script>
+        <script src="/scripts/jquery-ui.min.js" crossorigin="anonymous"></script>
+        
+        <script>
+            var accountDetailsController = {};
+            accountDetailsController.viewModel = {};
+            $(document).ready(function () {
+
+                accountDetailsController.viewModel = kendo.observable({
+                    accountName: "",
+                    accountNumber: "",
+                    accountType: "",
+                    accountbalance: "",
+                    dateCreated: "",
+                    lastTransactionDate:"",
+                    functions: {
+                        navigateBack: function () {
+                            window.history.back();
+                        }
+                    }
+                })
+                kendo.bind($("#main-div"),accountDetailsController.viewModel);
+                var accountId = sessionStorage.getItem("accountId")
+                $.ajax({
+                    url: "http://localhost:3000/account/"+accountId,
+                    type: "GET",
+                    success: function (data) {
+                        setAccountDetails(data); 
+                    }
+                });
+                $("#optionsDropdown").focusout(function(){
+                    console.log("out")
+                    $("#optionsDropdown").hide("slide",{direction:"down"}, 1000);
+                });
+                
+            });
+            function setAccountDetails(data) {
+                accountDetailsController.viewModel.set("accountName", data.accountName)
+                accountDetailsController.viewModel.set("accountNumber",data.accountNumber);
+                accountDetailsController.viewModel.set("accountType",data.accountType === "FIXED" ? "Fixed term savings" : "Flexible savings");
+                accountDetailsController.viewModel.set("accountbalance","₹"+(data.availableBalance/100).toFixed(2).replace(/(\d)(?=(\d{2})+\d\.)/g, '$1,'));
+                accountDetailsController.viewModel.set("dateCreated",data.dateCreated);
+                accountDetailsController.viewModel.set("lastTransactionDate",data.lastTransactionDate);
+            }
+
+            function togglePopup() {
+                if($("#optionsDropdown").is(":visible")) {
+                    $("#optionsDropdown").hide("slide",{direction:"down"}, 1000);
+                } else {
+                    $("#optionsDropdown").show("slide",{direction:"down"}, 1000);
+                }
+            }
+            
+        </script>
+    </body>
+</html>
